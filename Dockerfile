@@ -1,9 +1,14 @@
 FROM ubuntu:xenial
 
-RUN apt-get update \
-&& apt-get install -y etcd \
-# Delete all the apt list files since they're big and get stale quickly
-&& rm -rf /var/lib/apt/lists/*
+ARG ETCD_VER=v2.3.8
+ARG DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download
+
+EXEC curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
+&& mkdir -p /tmp/test-etcd && tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/test-etcd --strip-components=1 \
+&& mv /tmp/test-etcd/etcd /usr/bin/etcd \
+&& mv /tmp/test-etcd/etcdctl /usr/bin/etcdctl \
+&& rm -rf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
+&& rm -rf /tmp/test-etcd
 
 EXPOSE 2379 2380
 
