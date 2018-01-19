@@ -11,7 +11,7 @@ RUN apt-get update \
 && mv /tmp/test-etcd/etcdctl /usr/bin/etcdctl \
 && rm -rf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz \
 && rm -rf /tmp/test-etcd \
-&& apt-get remove curl \
+&& apt-get -y remove curl \
 && apt-get -y autoremove \
 # Delete all the apt list files since they're big and get stale quickly
 && rm -rf /var/lib/apt/lists/*
